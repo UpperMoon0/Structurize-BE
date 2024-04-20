@@ -9,15 +9,27 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> getUserById(Long id) {
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public Optional<User> getUser(Long id) {
         return userRepository.findById(id);
+    }
+
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 
     public List<User> getAllUsers() {

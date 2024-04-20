@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "[users]")
+@Table(name = "`user`")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,16 +26,16 @@ public class User {
     private Integer age;
 
     @Column(name = "status")
-    private String status;
+    private Byte status;
 
     @Column(name = "role")
-    private String role;
+    private Byte role;
 
     @Column(name = "gender_id")
-    private Long genderId;
+    private Byte genderId;
 
     @Column(name = "preference_id")
-    private Long preferenceId;
+    private Byte preferenceId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
