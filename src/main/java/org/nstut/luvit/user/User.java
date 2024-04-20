@@ -1,6 +1,10 @@
 package org.nstut.luvit.user;
 
 import jakarta.persistence.*;
+import org.nstut.luvit.gender.Gender;
+import org.nstut.luvit.role.Role;
+import org.nstut.luvit.status.Status;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,17 +29,21 @@ public class User {
     @Column(name = "age")
     private Integer age;
 
-    @Column(name = "status")
-    private Byte status;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
 
-    @Column(name = "role")
-    private Byte role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
-    @Column(name = "gender_id")
-    private Byte genderId;
+    @ManyToOne
+    @JoinColumn(name = "gender_id")
+    private Gender gender;
 
-    @Column(name = "preference_id")
-    private Byte preferenceId;
+    @ManyToOne
+    @JoinColumn(name = "preference_id")
+    private Gender preference;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

@@ -1,6 +1,8 @@
 package org.nstut.luvit.post;
 
 import jakarta.persistence.*;
+import org.nstut.luvit.status.Status;
+import org.nstut.luvit.user.User;
 
 import java.time.LocalDateTime;
 
@@ -11,8 +13,9 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "content")
     private String content;
@@ -26,8 +29,9 @@ public class Post {
     @Column(name = "total_comments")
     private Long totalComments;
 
-    @Column(name = "status")
-    private Byte status;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
 
     @Column(name = "image_url")
     private String imageUrl;
