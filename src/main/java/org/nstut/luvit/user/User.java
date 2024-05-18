@@ -1,6 +1,7 @@
 package org.nstut.luvit.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import org.nstut.luvit.gender.Gender;
 import org.nstut.luvit.role.Role;
 import org.nstut.luvit.status.Status;
@@ -20,6 +21,7 @@ public class User {
     @Column(name = "nick_name")
     private String nickName;
 
+    @Email
     @Column(name = "email")
     private String email;
 
@@ -50,6 +52,54 @@ public class User {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public @Email String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public Gender getPreference() {
+        return preference;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
     @Override
     public String toString() {

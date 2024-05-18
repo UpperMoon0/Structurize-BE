@@ -35,4 +35,36 @@ public class Post {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Long getTotalFavourites() {
+        return totalFavourites;
+    }
+
+    public Long getTotalComments() {
+        return totalComments;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }
