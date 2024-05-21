@@ -35,4 +35,13 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public User login(String email, String password) {
+        Optional<User> optionalUser = userRepository.findByEmailAndPassword(email, password);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        } else {
+            throw new RuntimeException("Invalid email or password");
+        }
+    }
 }

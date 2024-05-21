@@ -28,8 +28,17 @@ public class PostController {
         System.out.println("Getting all posts");
         List<Post> posts = postService.getAllPosts();
         List<PostResponse> postResponses = posts.stream()
-            .map(PostResponse::new)
-            .collect(Collectors.toList());
+                .map(post -> {
+                    PostResponse postResponse = new PostResponse();
+                    postResponse.setUserName(post.getUser().getFullName());
+                    postResponse.setContent(post.getContent());
+                    postResponse.setCreatedAt(post.getCreatedAt());
+                    postResponse.setTotalFavourites(post.getTotalFavourites());
+                    postResponse.setTotalComments(post.getTotalComments());
+                    postResponse.setImageUrl(post.getImageUrl());
+                    return postResponse;
+                })
+                .collect(Collectors.toList());
         return ResponseEntity.ok(postResponses);
     }
 }
