@@ -1,8 +1,8 @@
 package org.nstut.luvit.controller;
 
-import org.nstut.luvit.post.Post;
-import org.nstut.luvit.post.PostResponse;
-import org.nstut.luvit.post.PostService;
+import org.nstut.luvit.dto.PostResponse;
+import org.nstut.luvit.entity.Post;
+import org.nstut.luvit.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

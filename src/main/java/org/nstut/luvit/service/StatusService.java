@@ -1,5 +1,7 @@
-package org.nstut.luvit.status;
+package org.nstut.luvit.service;
 
+import org.nstut.luvit.repository.IStatusRepository;
+import org.nstut.luvit.entity.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,10 @@
-package org.nstut.luvit.status;
+package org.nstut.luvit.entity;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "status")
-public class Status {
+@Table(name = "role")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Byte id;

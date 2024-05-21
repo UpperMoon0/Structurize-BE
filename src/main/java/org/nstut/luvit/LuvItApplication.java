@@ -1,7 +1,7 @@
 package org.nstut.luvit;
 
-import org.nstut.luvit.user.User;
-import org.nstut.luvit.user.UserService;
+import org.nstut.luvit.entity.User;
+import org.nstut.luvit.service.UserService;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

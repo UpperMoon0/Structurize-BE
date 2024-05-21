@@ -1,5 +1,8 @@
-package org.nstut.luvit.favourite;
+package org.nstut.luvit.service;
 
+import org.nstut.luvit.entity.Favourite;
+import org.nstut.luvit.entity.FavouriteId;
+import org.nstut.luvit.repository.IFavouriteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

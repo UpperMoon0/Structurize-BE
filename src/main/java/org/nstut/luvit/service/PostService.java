@@ -1,5 +1,7 @@
-package org.nstut.luvit.post;
+package org.nstut.luvit.service;
 
+import org.nstut.luvit.entity.Post;
+import org.nstut.luvit.repository.IPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

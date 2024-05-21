@@ -2,7 +2,7 @@ package org.nstut.luvit.controller;
 
 import org.nstut.luvit.dto.LoginRequest;
 import org.nstut.luvit.dto.LoginResponse;
-import org.nstut.luvit.user.UserService;
+import org.nstut.luvit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

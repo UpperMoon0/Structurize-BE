@@ -1,4 +1,4 @@
-package org.nstut.luvit.post;
+package org.nstut.luvit.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,5 +1,7 @@
-package org.nstut.luvit.comment;
+package org.nstut.luvit.service;
 
+import org.nstut.luvit.entity.Comment;
+import org.nstut.luvit.repository.ICommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

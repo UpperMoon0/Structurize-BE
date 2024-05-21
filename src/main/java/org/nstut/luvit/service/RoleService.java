@@ -1,5 +1,7 @@
-package org.nstut.luvit.role;
+package org.nstut.luvit.service;
 
+import org.nstut.luvit.repository.IRoleRepository;
+import org.nstut.luvit.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

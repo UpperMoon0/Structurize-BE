@@ -1,4 +1,4 @@
-package org.nstut.luvit.favourite;
+package org.nstut.luvit.entity;
 
 import java.io.Serializable;
 import java.util.Objects;

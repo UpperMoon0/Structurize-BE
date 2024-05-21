@@ -1,10 +1,7 @@
-package org.nstut.luvit.user;
+package org.nstut.luvit.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import org.nstut.luvit.gender.Gender;
-import org.nstut.luvit.role.Role;
-import org.nstut.luvit.status.Status;
 
 import java.time.LocalDateTime;
 

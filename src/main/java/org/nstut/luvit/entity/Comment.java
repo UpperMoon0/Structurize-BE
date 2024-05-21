@@ -1,19 +1,21 @@
-package org.nstut.luvit.post;
+package org.nstut.luvit.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import org.nstut.luvit.status.Status;
-import org.nstut.luvit.user.User;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 
-@Getter
 @Entity
-@Table(name = "post")
-public class Post {
+@Table(name = "comment")
+@Repository
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -25,16 +27,11 @@ public class Post {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "total_favourites")
-    private Long totalFavourites;
-
-    @Column(name = "total_comments")
-    private Long totalComments;
-
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @ManyToOne
+    @JoinColumn(name = "reply_id")
+    private Comment reply;
 }

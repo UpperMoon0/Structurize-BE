@@ -1,5 +1,7 @@
-package org.nstut.luvit.user;
+package org.nstut.luvit.service;
 
+import org.nstut.luvit.repository.IUserRepository;
+import org.nstut.luvit.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

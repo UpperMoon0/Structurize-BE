@@ -1,5 +1,6 @@
-package org.nstut.luvit.user;
+package org.nstut.luvit.repository;
 
+import org.nstut.luvit.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

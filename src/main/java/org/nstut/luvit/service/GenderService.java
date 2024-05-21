@@ -1,5 +1,7 @@
-package org.nstut.luvit.gender;
+package org.nstut.luvit.service;
 
+import org.nstut.luvit.entity.Gender;
+import org.nstut.luvit.repository.IGenderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

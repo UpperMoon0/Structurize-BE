@@ -1,4 +1,4 @@
-package org.nstut.luvit.gender;
+package org.nstut.luvit.entity;
 
 import jakarta.persistence.*;
 
