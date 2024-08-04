@@ -1,4 +1,4 @@
-package com.nhat.structurizebe.controller;
+package com.nhat.structurizebe.controllers;
 
 import com.nhat.structurizebe.models.documents.BlockDocument;
 import com.nhat.structurizebe.services.BlockService;

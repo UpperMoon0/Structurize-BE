@@ -1,4 +1,4 @@
-package com.nhat.structurizebe.controller;
+package com.nhat.structurizebe.controllers;
 
 import com.nhat.structurizebe.models.documents.StructureDocument;
 import com.nhat.structurizebe.services.StructureService;
