@@ -1,10 +1,10 @@
-package com.nhat.structurize;
+package com.nhat.structurizebe;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StructurizeApplicationTests {
+class StructurizeBeApplicationTests {
 
     @Test
     void contextLoads() {

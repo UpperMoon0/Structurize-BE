@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nhat</groupId>
-    <artifactId>Structurize</artifactId>
+    <artifactId>StructurizeBE</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Structurize</name>
-    <description>Structurize</description>
+    <name>StructurizeBE</name>
+    <description>StructurizeBE</description>
     <url/>
     <licenses>
         <license/>
