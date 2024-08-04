@@ -13,5 +13,5 @@ public class StructureDocument {
     private String id;
     private String name;
     private String description;
-    private BlockDocument[][][] blocks;
+    private String[][][] blockIds;
 }
