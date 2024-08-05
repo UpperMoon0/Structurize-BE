@@ -4,17 +4,16 @@ import com.flowpowered.nbt.*;
 import com.flowpowered.nbt.stream.NBTInputStream;
 import com.nhat.structurizebe.models.documents.StructureDocument;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class NBTUtil {
 
-    public static StructureDocument readStructureFromNBT(String filePath) {
-        try (FileInputStream fileInputStream = new FileInputStream(filePath);
-            NBTInputStream nbtInputStream = new NBTInputStream(fileInputStream)) {
+    public static StructureDocument readStructureFromNBT(String name, String description, InputStream inputStream) {
+        try (NBTInputStream nbtInputStream = new NBTInputStream(inputStream)) {
 
             CompoundTag rootTag = (CompoundTag) nbtInputStream.readTag();
             CompoundMap value = rootTag.getValue();
@@ -60,12 +59,12 @@ public class NBTUtil {
             }
 
             return StructureDocument.builder()
-                    .name("Acacia Tree")
-                    .description("Generated acacia tree")
+                    .name(name)
+                    .description(description)
                     .blockIds(blockIds)
                     .build();
         } catch (IOException e) {
-            System.out.println("Error reading NBT file " + filePath);
+            System.out.println("Error reading NBT file");
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Index out of bounds exception");
         }

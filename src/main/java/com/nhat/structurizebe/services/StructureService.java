@@ -5,6 +5,9 @@ import com.nhat.structurizebe.repositories.StructureRepository;
 import com.nhat.structurizebe.util.NBTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @Service
@@ -15,15 +18,18 @@ public class StructureService {
         return structureRepository.findById(id).orElse(null);
     }
 
-    public void createStructureFromNBT() {
-        String temp_path = "D:\\Games\\Minecraft\\TLauncher MOdpacks\\saves\\Test\\generated\\minecraft\\structures\\acacia_tree.nbt";
-        StructureDocument structure = NBTUtil.readStructureFromNBT(temp_path);
+    public void createStructureFromNBT(String name, String description, MultipartFile file) {
+        try {
+            StructureDocument structure = NBTUtil.readStructureFromNBT(name, description, file.getInputStream());
 
-        if (structure == null) {
-            return;
+            if (structure == null) {
+                return;
+            }
+
+            structureRepository.save(structure);
+        } catch (IOException e) {
+            System.out.println("Error processing NBT file");
         }
-
-        structureRepository.save(structure);
     }
 
     public void deleteStructure(String id) {
