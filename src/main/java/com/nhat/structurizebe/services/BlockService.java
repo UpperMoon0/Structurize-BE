@@ -5,6 +5,8 @@ import com.nhat.structurizebe.repositories.BlockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class BlockService {
@@ -20,5 +22,9 @@ public class BlockService {
 
     public void deleteBlock(String id) {
         blockRepository.deleteById(id);
+    }
+
+    public List<BlockDocument> getBlocks() {
+        return blockRepository.findAll();
     }
 }

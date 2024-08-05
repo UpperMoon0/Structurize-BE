@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/block")
 @RestController
@@ -27,5 +29,10 @@ public class BlockController {
     public ResponseEntity<String> deleteBlock(@RequestParam String id) {
         blockService.deleteBlock(id);
         return ResponseEntity.ok("Block deleted successfully");
+    }
+
+    @GetMapping("get-blocks")
+    public ResponseEntity<List<BlockDocument>> getBlocks() {
+        return ResponseEntity.ok(blockService.getBlocks());
     }
 }
