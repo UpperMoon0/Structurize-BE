@@ -17,9 +17,9 @@ public class StructureController {
         return ResponseEntity.ok(structureService.getStructureById(id));
     }
 
-    @PostMapping("create-structure")
-    public ResponseEntity<String> createStructure(@RequestBody StructureDocument structure) {
-        structureService.createStructure(structure);
+    @PostMapping("create-structure-from-nbt")
+    public ResponseEntity<String> createStructure() {
+        structureService.createStructureFromNBT();
         return ResponseEntity.ok("Structure created successfully");
     }
 
