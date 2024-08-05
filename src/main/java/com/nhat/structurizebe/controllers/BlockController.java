@@ -32,7 +32,7 @@ public class BlockController {
     }
 
     @GetMapping("get-blocks")
-    public ResponseEntity<List<BlockDocument>> getBlocks() {
+    public ResponseEntity<Iterable<BlockDocument>> getBlocks() {
         return ResponseEntity.ok(blockService.getBlocks());
     }
 }

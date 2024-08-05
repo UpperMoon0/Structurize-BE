@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -16,6 +17,10 @@ public class StructureService {
 
     public StructureDocument getStructureById(String id) {
         return structureRepository.findById(id).orElse(null);
+    }
+
+    public List<StructureDocument> getAllStructures() {
+        return structureRepository.findAll();
     }
 
     public void createStructureFromNBT(String name, String description, MultipartFile file) {

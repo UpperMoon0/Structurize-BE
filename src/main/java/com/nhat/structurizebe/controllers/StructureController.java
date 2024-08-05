@@ -19,6 +19,11 @@ public class StructureController {
         return ResponseEntity.ok(structureService.getStructureById(id));
     }
 
+    @GetMapping("get-all-structures")
+    public ResponseEntity<Iterable<StructureDocument>> getAllStructures() {
+        return ResponseEntity.ok(structureService.getAllStructures());
+    }
+
     @PostMapping("/create-structure-from-nbt")
     public ResponseEntity<String> createStructureFromNBT(
             @RequestParam("name") String name,
