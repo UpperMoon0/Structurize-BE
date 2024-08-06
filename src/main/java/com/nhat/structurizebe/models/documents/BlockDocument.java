@@ -1,5 +1,6 @@
 package com.nhat.structurizebe.models.documents;
 
+import com.nhat.structurizebe.models.BlockProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
