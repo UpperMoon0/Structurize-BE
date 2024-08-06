@@ -69,7 +69,7 @@ public static StructureDocument readStructureFromNBT(String name, String descrip
                     final int shape = getShape(shapeTag);
                     final int facing = getFacing((Tag<String>) propertiesCM.get("facing"));
                     final boolean half = ((Tag<String>) propertiesCM.get("half")).getValue().equals("top");
-                    final boolean waterlogged = ((Tag<Boolean>) propertiesCM.get("waterlogged")).getValue();
+                    final boolean waterlogged = ((Tag<String>) propertiesCM.get("waterlogged")).getValue().equals("true");
                     
                     StairsBlockProperties properties = new StairsBlockProperties();
                     properties.setShape(shape);
@@ -83,7 +83,7 @@ public static StructureDocument readStructureFromNBT(String name, String descrip
                 Tag<String> slabTypeTag = (Tag<String>) propertiesCM.get("type");
                 if (slabTypeTag != null) {
                     final boolean half = slabTypeTag.getValue().equals("top") ? SlabBlockProperties.HALF_TOP : SlabBlockProperties.HALF_BOTTOM;
-                    final boolean waterlogged = ((Tag<Boolean>) propertiesCM.get("waterlogged")).getValue();
+                    final boolean waterlogged = ((Tag<String>) propertiesCM.get("waterlogged")).getValue().equals("true");
                     SlabBlockProperties properties = new SlabBlockProperties();
                     properties.setHalf(half);
                     properties.setWaterlogged(waterlogged);
@@ -91,9 +91,9 @@ public static StructureDocument readStructureFromNBT(String name, String descrip
                 }
 
                 // Check if the block is a pressure plate
-                Tag<Boolean> poweredTag = (Tag<Boolean>) propertiesCM.get("powered");
+                Tag<String> poweredTag = (Tag<String>) propertiesCM.get("powered");
                 if (poweredTag != null) {
-                    final boolean powered = poweredTag.getValue();
+                    final boolean powered = poweredTag.getValue().equals("true");
                     PressurePlateBlockProperties properties = new PressurePlateBlockProperties();
                     properties.setPowered(powered);
                     blockData.setProperties(properties);
@@ -103,11 +103,11 @@ public static StructureDocument readStructureFromNBT(String name, String descrip
                 Tag<String> northTag = (Tag<String>) propertiesCM.get("north");
                 if (northTag != null) {
                     final int north = getWallExtendHeight(northTag);
-                    final int east = Integer.parseInt(((Tag<String>) propertiesCM.get("east")).getValue());
-                    final int south = Integer.parseInt(((Tag<String>) propertiesCM.get("south")).getValue());
-                    final int west = Integer.parseInt(((Tag<String>) propertiesCM.get("west")).getValue());
-                    final int up = Integer.parseInt(((Tag<String>) propertiesCM.get("up")).getValue());
-                    final boolean waterlogged = ((Tag<Boolean>) propertiesCM.get("waterlogged")).getValue();
+                    final int east = getWallExtendHeight((Tag<String>) propertiesCM.get("east"));
+                    final int south = getWallExtendHeight((Tag<String>) propertiesCM.get("south"));
+                    final int west = getWallExtendHeight((Tag<String>) propertiesCM.get("west"));
+                    final int up = getWallExtendHeight((Tag<String>) propertiesCM.get("up"));
+                    final boolean waterlogged = ((Tag<String>) propertiesCM.get("waterlogged")).getValue().equals("true");
                     WallBlockProperties properties = new WallBlockProperties();
                     properties.setNorth(north);
                     properties.setEast(east);

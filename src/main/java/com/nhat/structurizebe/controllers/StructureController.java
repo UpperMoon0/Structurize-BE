@@ -33,6 +33,7 @@ public class StructureController {
             structureService.createStructureFromNBT(name, description, file);
             return ResponseEntity.ok("Structure created successfully");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
