@@ -16,5 +16,6 @@ public class StructureDocument {
     private String id;
     private String name;
     private String description;
-    private BlockData[][][] blocksData;
+    private int[][][] blocks;
+    private BlockData[] palette;
 }
