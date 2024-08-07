@@ -1,5 +1,6 @@
 package com.nhat.structurizebe.models.documents;
 
+import com.nhat.structurizebe.models.BlockData;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +16,5 @@ public class StructureDocument {
     private String id;
     private String name;
     private String description;
-    private String[][][] blockIds;
+    private BlockData[][][] blocksData;
 }
