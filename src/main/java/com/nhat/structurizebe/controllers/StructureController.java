@@ -3,10 +3,14 @@ package com.nhat.structurizebe.controllers;
 import com.nhat.structurizebe.models.documents.StructureDocument;
 import com.nhat.structurizebe.services.StructureService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/structure")
@@ -30,7 +34,7 @@ public class StructureController {
             @RequestParam("description") String description,
             @RequestPart("file") MultipartFile file) {
         try {
-            structureService.createStructureFromNBT(name, description, file);
+            structureService.createStructureFromNBTFile(name, description, file);
             return ResponseEntity.ok("Structure created successfully");
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,5 +46,22 @@ public class StructureController {
     public ResponseEntity<String> deleteStructure(@RequestParam String id) {
         structureService.deleteStructure(id);
         return ResponseEntity.ok("Structure deleted successfully");
+    }
+
+    @GetMapping("/download-nbt/{id}")
+    public ResponseEntity<InputStreamResource> downloadNBTFile(@PathVariable String id) throws IOException {
+        MultipartFile nbtFile = structureService.getNBTFileById(id);
+
+        if (nbtFile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        InputStreamResource resource = new InputStreamResource(nbtFile.getInputStream());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + nbtFile.getOriginalFilename())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(nbtFile.getSize())
+                .body(resource);
     }
 }

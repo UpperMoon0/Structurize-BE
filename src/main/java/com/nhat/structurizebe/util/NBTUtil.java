@@ -2,11 +2,15 @@ package com.nhat.structurizebe.util;
 
 import com.flowpowered.nbt.*;
 import com.flowpowered.nbt.stream.NBTInputStream;
+import com.flowpowered.nbt.stream.NBTOutputStream;
 import com.nhat.structurizebe.models.*;
 import com.nhat.structurizebe.models.documents.StructureDocument;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NBTUtil {
@@ -23,11 +27,11 @@ public class NBTUtil {
         try (NBTInputStream nbtInputStream = new NBTInputStream(inputStream)) {
 
             CompoundTag rootTag = (CompoundTag) nbtInputStream.readTag();
-            CompoundMap value = rootTag.getValue();
+            CompoundMap rootCM = rootTag.getValue();
 
-            ListTag<Tag<Integer>> sizeTag = (ListTag<Tag<Integer>>) value.get("size");
-            ListTag<Tag<CompoundMap>> paletteTag = (ListTag<Tag<CompoundMap>>) value.get("palette");
-            ListTag<Tag<CompoundMap>> blocksTag = (ListTag<Tag<CompoundMap>>) value.get("blocks");
+            ListTag<Tag<Integer>> sizeTag = (ListTag<Tag<Integer>>) rootCM.get("size");
+            ListTag<Tag<CompoundMap>> paletteTag = (ListTag<Tag<CompoundMap>>) rootCM.get("palette");
+            ListTag<Tag<CompoundMap>> blocksTag = (ListTag<Tag<CompoundMap>>) rootCM.get("blocks");
 
             if (sizeTag == null || paletteTag == null || blocksTag == null) {
                 return null;
@@ -168,5 +172,39 @@ public class NBTUtil {
             default -> wallExtendHeight = WallBlockProperties.WALL_NONE;
         }
         return wallExtendHeight;
+    }
+
+    public static ByteArrayOutputStream writeStructureToNBT(StructureDocument structure, String name) {
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            NBTOutputStream nbtOutputStream = new NBTOutputStream(byteArrayOutputStream)) {
+
+            CompoundTag rootTag = new CompoundTag(name, new CompoundMap());
+
+            List<CompoundTag> blockList = new ArrayList<>();
+            int[][][] blocks = structure.getBlocks();
+            for (int y = 0; y < structure.getBlocks().length; y++) {
+                for (int z = 0; z < structure.getBlocks()[y].length; z++) {
+                    for (int x = 0; x < structure.getBlocks()[y][z].length; x++) {
+                        int state = blocks[y][z][x];
+
+                        CompoundMap blockCM = new CompoundMap();
+                        blockCM.put("state", new IntTag("state", state));
+                        List<IntTag> posList = List.of(new IntTag("", x), new IntTag("", blocks.length - y - 1), new IntTag("", z));
+                        ListTag<IntTag> pos = new ListTag<>("pos", IntTag.class, posList);
+                        blockCM.put(pos);
+
+                        blockList.add(new CompoundTag("", blockCM));
+                    }
+                }
+            }
+            ListTag<CompoundTag> blocksTag = new ListTag<>("blocks", CompoundTag.class, blockList);
+            rootTag.getValue().put(blocksTag);
+
+            nbtOutputStream.writeTag(rootTag);
+            return byteArrayOutputStream;
+        } catch (IOException e) {
+            System.out.println("Error writing NBT file");
+            return null;
+        }
     }
 }
