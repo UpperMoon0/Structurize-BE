@@ -153,7 +153,8 @@ public static StructureDocument readStructureFromNBT(String name, String descrip
             case "inner_left" -> shape = StairsBlockProperties.SHAPE_INNER_LEFT;
             case "inner_right" -> shape = StairsBlockProperties.SHAPE_INNER_RIGHT;
             case "outer_left" -> shape = StairsBlockProperties.SHAPE_OUTER_LEFT;
-            default -> shape = StairsBlockProperties.SHAPE_OUTER_RIGHT;
+            case "outer_right" -> shape = StairsBlockProperties.SHAPE_OUTER_RIGHT;
+            default -> shape = StairsBlockProperties.SHAPE_STRAIGHT;
         }
         return shape;
     }
@@ -165,8 +166,6 @@ public static StructureDocument readStructureFromNBT(String name, String descrip
             case "east" -> facing = StairsBlockProperties.FACING_EAST;
             case "south" -> facing = StairsBlockProperties.FACING_SOUTH;
             case "west" -> facing = StairsBlockProperties.FACING_WEST;
-            case "up" -> facing = StairsBlockProperties.FACING_UP;
-            case "down" -> facing = StairsBlockProperties.FACING_DOWN;
             default -> facing = StairsBlockProperties.FACING_NORTH;
         }
         return facing;

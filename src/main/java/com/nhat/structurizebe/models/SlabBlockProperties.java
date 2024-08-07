@@ -1,6 +1,5 @@
 package com.nhat.structurizebe.models;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

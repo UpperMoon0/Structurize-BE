@@ -19,8 +19,6 @@ public class StairsBlockProperties extends BlockProperties {
     public static final int FACING_EAST = 1;
     public static final int FACING_SOUTH = 2;
     public static final int FACING_WEST = 3;
-    public static final int FACING_UP = 4;
-    public static final int FACING_DOWN = 5;
 
     private boolean half;
     private int shape;
