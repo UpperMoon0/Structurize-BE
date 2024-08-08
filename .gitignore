@@ -31,9 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-# Ignore everything in target directory
-target/**
-
-# Unignore .jar files in target directory
-!target/**/*.jar
