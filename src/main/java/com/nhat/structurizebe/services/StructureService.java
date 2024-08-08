@@ -3,7 +3,7 @@ package com.nhat.structurizebe.services;
 import com.nhat.structurizebe.models.documents.StructureDocument;
 import com.nhat.structurizebe.models.dto.response.CommonMultipartFile;
 import com.nhat.structurizebe.repositories.StructureRepository;
-import com.nhat.structurizebe.util.NBTUtil;
+import com.nhat.structurizebe.util.NbtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +26,7 @@ public class StructureService {
 
     public void createStructureFromNBTFile(String name, String description, MultipartFile file) {
         try {
-            StructureDocument structure = NBTUtil.readStructureFromNBT(name, description, file.getInputStream());
+            StructureDocument structure = NbtUtil.readStructureFromNBT(name, description, file.getInputStream());
 
             if (structure == null) {
                 return;
@@ -45,7 +45,7 @@ public class StructureService {
             return null;
         }
 
-        ByteArrayOutputStream outputStream = NBTUtil.writeStructureToNBT(structure);
+        ByteArrayOutputStream outputStream = NbtUtil.writeStructureToNBT(structure);
         if (outputStream == null) {
             return null;
         }

@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NBTUtil {
+public class NbtUtil {
     /**
      * Reads a structure from an NBT input stream and constructs a StructureDocument.
      *
@@ -123,12 +123,13 @@ public class NBTUtil {
                 blocks[currentY][z][x] = state;
             }
 
-            return StructureDocument.builder()
-                    .name(name)
-                    .description(description)
-                    .blocks(blocks)
-                    .palette(palette)
-                    .build();
+            StructureDocument structure = new StructureDocument();
+            structure.setName(name);
+            structure.setDescription(description);
+            structure.setBlocks(blocks);
+            structure.setPalette(palette);
+
+            return structure;
         } catch (IOException e) {
             System.out.println("Error reading NBT file");
         } catch (IndexOutOfBoundsException e) {
