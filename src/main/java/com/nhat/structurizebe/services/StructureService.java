@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,13 +25,17 @@ public class StructureService {
         return structureRepository.findAll();
     }
 
-    public void createStructureFromNBTFile(String name, String description, MultipartFile file) {
+    public void createStructureFromNBTFile(String name, String description, String authorId, MultipartFile file) {
         try {
             StructureDocument structure = NbtUtil.readStructureFromNBT(name, description, file.getInputStream());
 
             if (structure == null) {
                 return;
             }
+
+            structure.setAuthorId(authorId);
+            structure.setCreatedAt(LocalDateTime.now());
+            structure.setUpdatedAt(LocalDateTime.now());
 
             structureRepository.save(structure);
         } catch (IOException e) {

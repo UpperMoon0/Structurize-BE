@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @Document(collection = "structures")
@@ -15,4 +17,7 @@ public class StructureDocument {
     private String description;
     private int[][][] blocks;
     private BlockData[] palette;
+    private String authorId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

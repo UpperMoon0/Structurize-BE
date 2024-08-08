@@ -1,6 +1,7 @@
 package com.nhat.structurizebe.config;
 
 import com.nhat.structurizebe.repositories.AccountRepository;
+import com.nhat.structurizebe.repositories.RoleRepository;
 import com.nhat.structurizebe.security.JwtAuthenticationFilter;
 import com.nhat.structurizebe.services.AccountDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +29,20 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AccountRepository accountRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter,
-                          AccountRepository accountRepository) {
+                          AccountRepository accountRepository,
+                          RoleRepository roleRepository) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.accountRepository = accountRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new AccountDetailsService(accountRepository);
+        return new AccountDetailsService(accountRepository, roleRepository);
     }
 
     @Bean

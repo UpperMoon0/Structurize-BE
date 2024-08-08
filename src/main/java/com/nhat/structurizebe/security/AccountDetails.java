@@ -2,6 +2,8 @@ package com.nhat.structurizebe.security;
 
 import com.nhat.structurizebe.models.documents.AccountDocument;
 import com.nhat.structurizebe.models.documents.RoleDocument;
+import com.nhat.structurizebe.repositories.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,14 +16,15 @@ public class AccountDetails implements UserDetails {
 
     private final String email;
     private final String password;
-    Collection<? extends GrantedAuthority> authorities;
+    private final Collection<? extends GrantedAuthority> authorities;
 
-    public AccountDetails(AccountDocument account) {
+    public AccountDetails(AccountDocument account, RoleRepository roleRepository) {
         this.email = account.getEmail();
-        this.password= account.getPassword();
+        this.password = account.getPassword();
         List<GrantedAuthority> auths = new ArrayList<>();
 
-        for(RoleDocument role : account.getRoles()) {
+        for (String roleId : account.getRoleIds()) {
+            RoleDocument role = roleRepository.findById(roleId).orElseThrow(() -> new IllegalArgumentException("Role not found: " + roleId));
             auths.add(new SimpleGrantedAuthority(role.getName().toUpperCase()));
         }
         this.authorities = auths;

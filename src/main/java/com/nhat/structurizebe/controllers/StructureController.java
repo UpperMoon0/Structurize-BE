@@ -1,6 +1,8 @@
 package com.nhat.structurizebe.controllers;
 
 import com.nhat.structurizebe.models.documents.StructureDocument;
+import com.nhat.structurizebe.services.AuthService;
+import com.nhat.structurizebe.services.JwtService;
 import com.nhat.structurizebe.services.StructureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -16,7 +18,9 @@ import java.io.IOException;
 @RequestMapping("/api/structure")
 @RestController
 public class StructureController {
+
     private final StructureService structureService;
+    private final AuthService authService;
 
     @GetMapping("get-structure")
     public ResponseEntity<StructureDocument> getStructureById(@RequestParam String id) {
@@ -32,9 +36,13 @@ public class StructureController {
     public ResponseEntity<String> createStructureFromNBT(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
-            @RequestPart("file") MultipartFile file) {
+            @RequestPart("file") MultipartFile file,
+            @RequestHeader("Authorization") String authorizationHeader) {
         try {
-            structureService.createStructureFromNBTFile(name, description, file);
+            String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
+            String authorId = authService.getAccountByJwt(token).getId();
+
+            structureService.createStructureFromNBTFile(name, description, authorId, file);
             return ResponseEntity.ok("Structure created successfully");
         } catch (Exception e) {
             e.printStackTrace();

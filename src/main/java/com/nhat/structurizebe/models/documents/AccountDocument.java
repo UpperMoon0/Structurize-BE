@@ -17,5 +17,5 @@ public class AccountDocument {
     private String email;
     private String username;
     private String password;
-    private Set<RoleDocument> roles = new HashSet<>();
+    private Set<String> roleIds = new HashSet<>();
 }
