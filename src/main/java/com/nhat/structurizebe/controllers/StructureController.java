@@ -59,7 +59,6 @@ public class StructureController {
         InputStreamResource resource = new InputStreamResource(nbtFile.getInputStream());
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + nbtFile.getOriginalFilename())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .contentLength(nbtFile.getSize())
                 .body(resource);

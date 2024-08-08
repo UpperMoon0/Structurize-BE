@@ -44,9 +44,8 @@ public class StructureService {
         if (structure == null) {
             return null;
         }
-
-        String name = structure.getName().replaceAll("[^a-zA-Z_]", "").toLowerCase();;
-        ByteArrayOutputStream outputStream = NBTUtil.writeStructureToNBT(structure, name);
+        
+        ByteArrayOutputStream outputStream = NBTUtil.writeStructureToNBT(structure);
         if (outputStream == null) {
             return null;
         }
