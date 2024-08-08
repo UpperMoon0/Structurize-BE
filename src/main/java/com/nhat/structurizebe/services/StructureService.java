@@ -44,7 +44,7 @@ public class StructureService {
         if (structure == null) {
             return null;
         }
-        
+
         ByteArrayOutputStream outputStream = NBTUtil.writeStructureToNBT(structure);
         if (outputStream == null) {
             return null;
