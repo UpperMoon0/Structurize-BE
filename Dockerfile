@@ -1,22 +1,14 @@
-# Use the official Ubuntu image as a base
-FROM ubuntu:latest
-
-# Install OpenJDK 21 and Maven
-RUN apt-get update && \
-    apt-get install -y openjdk-21-jdk maven
+# Use the official OpenJDK 21 image as a base
+FROM openjdk:21-jdk-slim
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Maven build file and the source code
-COPY pom.xml .
-COPY src ./src
+# Copy the Spring Boot application jar file into the container
+COPY target/StructurizeBE-0.5.jar app.jar
 
-# Build the application
-RUN mvn clean package -DskipTests
-
-# Expose the port the application runs on
+# Expose port 8080 to the outside world
 EXPOSE 8080
 
-# Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "target/StructurizeBE-0.5.jar"]
+# Command to run the Spring Boot application
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
