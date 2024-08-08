@@ -1,21 +1,21 @@
 package com.nhat.structurizebe.models.documents;
 
-import com.nhat.structurizebe.models.BlockProperties;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@Document(collection = "blocks")
-public class BlockDocument {
+@Document(collection = "accounts")
+public class AccountDocument {
     @Id
     private String id;
-    private String name;
-    private Map<String, String> textures;
+    private String email;
+    private String username;
+    private String password;
+    private Set<String> roleIds = new HashSet<>();
 }

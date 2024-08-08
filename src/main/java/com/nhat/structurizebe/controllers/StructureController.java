@@ -1,18 +1,26 @@
 package com.nhat.structurizebe.controllers;
 
 import com.nhat.structurizebe.models.documents.StructureDocument;
+import com.nhat.structurizebe.services.AuthService;
+import com.nhat.structurizebe.services.JwtService;
 import com.nhat.structurizebe.services.StructureService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/structure")
 @RestController
 public class StructureController {
+
     private final StructureService structureService;
+    private final AuthService authService;
 
     @GetMapping("get-structure")
     public ResponseEntity<StructureDocument> getStructureById(@RequestParam String id) {
@@ -28,11 +36,16 @@ public class StructureController {
     public ResponseEntity<String> createStructureFromNBT(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
-            @RequestPart("file") MultipartFile file) {
+            @RequestPart("file") MultipartFile file,
+            @RequestHeader("Authorization") String authorizationHeader) {
         try {
-            structureService.createStructureFromNBT(name, description, file);
+            String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
+            String authorId = authService.getAccountByJwt(token).getId();
+
+            structureService.createStructureFromNBTFile(name, description, authorId, file);
             return ResponseEntity.ok("Structure created successfully");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
@@ -41,5 +54,21 @@ public class StructureController {
     public ResponseEntity<String> deleteStructure(@RequestParam String id) {
         structureService.deleteStructure(id);
         return ResponseEntity.ok("Structure deleted successfully");
+    }
+
+    @GetMapping("/download-nbt/{id}")
+    public ResponseEntity<InputStreamResource> downloadNBTFile(@PathVariable String id) throws IOException {
+        MultipartFile nbtFile = structureService.getNBTFileById(id);
+
+        if (nbtFile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        InputStreamResource resource = new InputStreamResource(nbtFile.getInputStream());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(nbtFile.getSize())
+                .body(resource);
     }
 }

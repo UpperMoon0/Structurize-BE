@@ -1,19 +1,23 @@
 package com.nhat.structurizebe.models.documents;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.nhat.structurizebe.models.BlockData;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Setter
-@Getter
-@Builder
+import java.time.LocalDateTime;
+
+@Data
+@NoArgsConstructor
 @Document(collection = "structures")
 public class StructureDocument {
     @Id
     private String id;
     private String name;
     private String description;
-    private String[][][] blockIds;
+    private int[][][] blocks;
+    private BlockData[] palette;
+    private String authorId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
