@@ -18,6 +18,7 @@ public class StructureDocument {
     private int[][][] blocks;
     private BlockData[] palette;
     private String authorId;
+    private long download;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
