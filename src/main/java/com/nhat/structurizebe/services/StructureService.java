@@ -38,9 +38,8 @@ public class StructureService {
         StructureDocument structure = structureRepository.findById(id).orElseThrow(StructureNotFoundException::new);
         AccountDocument account = accountRepository.findById(structure.getAuthorId()).orElseThrow(AccountNotFoundException::new);
         int likeCount = structureLikeRepository.countByStructureId(id);
-        List<StructureCommentDocument> comments = structureCommentRepository.findByStructureId(id);
 
-        return new StructureDetailsResponse(structure, account.getUsername(), likeCount, comments, accountRepository);
+        return new StructureDetailsResponse(structure, account.getUsername(), likeCount);
     }
 
     public List<StructureDocument> getAllStructures() {

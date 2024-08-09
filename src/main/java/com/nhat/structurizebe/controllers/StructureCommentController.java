@@ -1,6 +1,8 @@
 package com.nhat.structurizebe.controllers;
 
+import com.nhat.structurizebe.models.documents.StructureCommentDocument;
 import com.nhat.structurizebe.models.dto.request.CreateStructureCommentRequest;
+import com.nhat.structurizebe.models.dto.response.StructureCommentsResponse;
 import com.nhat.structurizebe.services.StructureCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +34,10 @@ public class StructureCommentController {
             LOGGER.severe("Error: " + e.getMessage());
             return ResponseEntity.badRequest().body("Failed to create structure comment");
         }
+    }
+
+    @GetMapping("/get-by-structure")
+    public ResponseEntity<StructureCommentsResponse> getCommentsByStructure(@RequestParam String structureId) {
+        return ResponseEntity.ok(structureCommentService.getCommentsByStructure(structureId));
     }
 }

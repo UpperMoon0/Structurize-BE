@@ -53,6 +53,7 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/structure/get-structure-list",
                                 "/api/structure/get-structure-details",
+                                "/api/structure-comment/get-by-structure",
                                 "/api/block/get-blocks"
                                 ).permitAll()
                         .anyRequest().authenticated()

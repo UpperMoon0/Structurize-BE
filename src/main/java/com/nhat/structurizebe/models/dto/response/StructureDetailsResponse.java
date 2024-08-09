@@ -16,27 +16,12 @@ public class StructureDetailsResponse {
     private StructureDocument structure;
     private String authorName;
     private int likeCount;
-    private List<StructureDetailsComment> comments = new ArrayList<>();
 
     public StructureDetailsResponse(StructureDocument structure,
                                     String authorName,
-                                    int likeCount,
-                                    List<StructureCommentDocument> comments,
-                                    AccountRepository accountRepository) throws AccountNotFoundException {
+                                    int likeCount) {
         this.structure = structure;
         this.authorName = authorName;
         this.likeCount = likeCount;
-
-        for (StructureCommentDocument comment : comments) {
-            AccountDocument account = accountRepository.findById(comment.getAccountId()).orElseThrow(AccountNotFoundException::new);
-            this.comments.add(new StructureDetailsComment(account.getUsername(), comment.getContent(), comment.getCreatedAt(), comment.getUpdatedAt()));
-        }
     }
 }
-
-record StructureDetailsComment(
-        String authorName,
-        String content,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
-) {}
