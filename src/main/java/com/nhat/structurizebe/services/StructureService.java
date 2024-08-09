@@ -1,9 +1,12 @@
 package com.nhat.structurizebe.services;
 
 import com.nhat.structurizebe.exception.AccountNotFoundException;
+import com.nhat.structurizebe.exception.StructureNotFoundException;
 import com.nhat.structurizebe.models.documents.AccountDocument;
+import com.nhat.structurizebe.models.documents.StructureCommentDocument;
 import com.nhat.structurizebe.models.documents.StructureDocument;
 import com.nhat.structurizebe.models.dto.response.CommonMultipartFile;
+import com.nhat.structurizebe.models.dto.response.StructureDetailsResponse;
 import com.nhat.structurizebe.models.dto.response.StructureListResponse;
 import com.nhat.structurizebe.repositories.AccountRepository;
 import com.nhat.structurizebe.repositories.StructureCommentRepository;
@@ -11,12 +14,10 @@ import com.nhat.structurizebe.repositories.StructureLikeRepository;
 import com.nhat.structurizebe.repositories.StructureRepository;
 import com.nhat.structurizebe.util.NbtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,8 +30,17 @@ public class StructureService {
     private final StructureCommentRepository structureCommentRepository;
     private final AuthService authService;
 
-    public StructureDocument getStructureById(String id) {
-        return structureRepository.findById(id).orElse(null);
+    public StructureDocument getStructureById(String id) throws StructureNotFoundException {
+        return structureRepository.findById(id).orElseThrow(StructureNotFoundException::new);
+    }
+
+    public StructureDetailsResponse getStructureDetails(String id) throws StructureNotFoundException, AccountNotFoundException {
+        StructureDocument structure = structureRepository.findById(id).orElseThrow(StructureNotFoundException::new);
+        AccountDocument account = accountRepository.findById(structure.getAuthorId()).orElseThrow(AccountNotFoundException::new);
+        int likeCount = structureLikeRepository.countByStructureId(id);
+        List<StructureCommentDocument> comments = structureCommentRepository.findByStructureId(id);
+
+        return new StructureDetailsResponse(structure, account.getUsername(), likeCount, comments, accountRepository);
     }
 
     public List<StructureDocument> getAllStructures() {
@@ -46,7 +56,7 @@ public class StructureService {
         return new StructureListResponse(structureRepository.findAll(), accountRepository, null, structureLikeRepository, structureCommentRepository);
     }
 
-    public void createStructureFromNBTFile(String name, String description, String authorId, MultipartFile file) {
+    public void uploadAsNBTFile(String name, String description, String authorId, MultipartFile file) {
         try {
             StructureDocument structure = NbtUtil.readStructureFromNBT(name, description, file.getInputStream());
 
@@ -55,8 +65,6 @@ public class StructureService {
             }
 
             structure.setAuthorId(authorId);
-            structure.setCreatedAt(LocalDateTime.now());
-            structure.setUpdatedAt(LocalDateTime.now());
 
             structureRepository.save(structure);
         } catch (IOException e) {
@@ -64,17 +72,16 @@ public class StructureService {
         }
     }
 
-    public MultipartFile getNBTFileById(String id) {
-        StructureDocument structure = structureRepository.findById(id).orElse(null);
-
-        if (structure == null) {
-            return null;
-        }
+    public MultipartFile downloadAsNBTFile(String id) throws RuntimeException {
+        StructureDocument structure = structureRepository.findById(id).orElseThrow(StructureNotFoundException::new);
 
         ByteArrayOutputStream outputStream = NbtUtil.writeStructureToNBT(structure);
         if (outputStream == null) {
-            return null;
+            throw new RuntimeException("Error writing NBT file");
         }
+
+        structure.setDownload(structure.getDownload() + 1);
+        structureRepository.save(structure);
 
         byte[] byteArray = outputStream.toByteArray();
         return new CommonMultipartFile(byteArray, ".nbt");

@@ -47,7 +47,7 @@ public class AuthController {
             return ResponseEntity.ok(authService.login(request.getEmail(), request.getPassword()));
         } catch (UsernameNotFoundException e) {
             LOGGER.warning("Invalid email or password");
-            return ResponseEntity.badRequest().body("Invalid email or password");
+            return ResponseEntity.badRequest().body("");
         }
     }
 }

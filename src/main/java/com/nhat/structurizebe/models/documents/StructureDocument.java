@@ -19,6 +19,6 @@ public class StructureDocument {
     private BlockData[] palette;
     private String authorId;
     private long download;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = createdAt;
 }

@@ -29,8 +29,8 @@ public class StructureListResponse {
             boolean isAuthor = author.getId().equals(currentUserId);
             StructureLikeDocument myLike = structureLikeRepository.findByAccountIdAndStructureId(currentUserId, structure.getId()).orElse(null);
             boolean isLiked = myLike != null;
-            int likeCount = structureLikeRepository.findByStructureId(structure.getId()).size();
-            int commentCount = structureCommentRepository.findByStructureId(structure.getId()).size();
+            int likeCount = structureLikeRepository.countByStructureId(structure.getId());
+            int commentCount = structureCommentRepository.countByStructureId(structure.getId());
             this.structures.add(new StructureListItem(structure.getId(), structure.getName(), structure.getUpdatedAt(), author.getUsername(), isAuthor, isLiked, likeCount, commentCount));
         }
     }

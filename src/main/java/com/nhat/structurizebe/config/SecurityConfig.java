@@ -52,7 +52,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/structure/get-structure-list",
-                                "/api/structure/get-structure",
+                                "/api/structure/get-structure-details",
                                 "/api/block/get-blocks"
                                 ).permitAll()
                         .anyRequest().authenticated()

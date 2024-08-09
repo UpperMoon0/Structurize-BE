@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @Document(collection = "structure_comments")
@@ -14,6 +16,6 @@ public class StructureCommentDocument {
     private String structureId;
     private String accountId;
     private String content;
-    private long createdAt;
-    private long updatedAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = createdAt;
 }

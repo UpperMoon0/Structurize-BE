@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,4 +19,5 @@ public class AccountDocument {
     private String username;
     private String password;
     private Set<String> roleIds = new HashSet<>();
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

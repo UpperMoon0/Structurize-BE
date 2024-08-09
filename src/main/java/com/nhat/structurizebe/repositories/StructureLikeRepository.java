@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface StructureLikeRepository extends MongoRepository<StructureLikeDocument, String>{
     Optional<StructureLikeDocument> findByAccountIdAndStructureId(String accountId, String structureId);
     List<StructureLikeDocument> findByStructureId(String structureId);
+    int countByStructureId(String structureId);
 }

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface StructureCommentRepository extends MongoRepository<StructureCommentDocument, String> {
     List<StructureCommentDocument> findByStructureId(String structureId);
+    int countByStructureId(String structureId);
 }

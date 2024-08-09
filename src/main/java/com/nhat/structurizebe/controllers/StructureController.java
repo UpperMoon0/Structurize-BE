@@ -1,14 +1,14 @@
 package com.nhat.structurizebe.controllers;
 
 import com.nhat.structurizebe.exception.AccountNotFoundException;
+import com.nhat.structurizebe.exception.StructureNotFoundException;
 import com.nhat.structurizebe.models.documents.StructureDocument;
+import com.nhat.structurizebe.models.dto.response.StructureDetailsResponse;
 import com.nhat.structurizebe.models.dto.response.StructureListResponse;
 import com.nhat.structurizebe.services.AuthService;
-import com.nhat.structurizebe.services.JwtService;
 import com.nhat.structurizebe.services.StructureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,25 @@ public class StructureController {
 
     @GetMapping("get-structure")
     public ResponseEntity<StructureDocument> getStructureById(@RequestParam String id) {
-        return ResponseEntity.ok(structureService.getStructureById(id));
+        try {
+            return ResponseEntity.ok(structureService.getStructureById(id));
+        } catch (StructureNotFoundException e) {
+            LOGGER.warning("Structure not found");
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("get-structure-details")
+    public ResponseEntity<StructureDetailsResponse> getStructureDetails(@RequestParam String id) {
+        try {
+            return ResponseEntity.ok(structureService.getStructureDetails(id));
+        } catch (StructureNotFoundException e) {
+            LOGGER.warning("Structure not found");
+            return ResponseEntity.notFound().build();
+        } catch (AccountNotFoundException e) {
+            LOGGER.warning("Account not found");
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("get-all-structures")
@@ -49,7 +67,7 @@ public class StructureController {
             }
             return ResponseEntity.ok(response);
         } catch (AccountNotFoundException e) {
-            LOGGER.severe("Account not found");
+            LOGGER.warning("Account not found");
             return ResponseEntity.badRequest().build();
         }
     }
@@ -64,7 +82,7 @@ public class StructureController {
             String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
             String authorId = authService.getAccountByJwt(token).getId();
 
-            structureService.createStructureFromNBTFile(name, description, authorId, file);
+            structureService.uploadAsNBTFile(name, description, authorId, file);
             return ResponseEntity.ok("Structure created successfully");
         } catch (Exception e) {
             LOGGER.severe("Error creating structure: " + e.getMessage());
@@ -80,17 +98,21 @@ public class StructureController {
 
     @GetMapping("/download-nbt/{id}")
     public ResponseEntity<InputStreamResource> downloadNBTFile(@PathVariable String id) throws IOException {
-        MultipartFile nbtFile = structureService.getNBTFileById(id);
+        try {
+            MultipartFile nbtFile = structureService.downloadAsNBTFile(id);
 
-        if (nbtFile == null) {
+            InputStreamResource resource = new InputStreamResource(nbtFile.getInputStream());
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentLength(nbtFile.getSize())
+                    .body(resource);
+        } catch (StructureNotFoundException e) {
+            LOGGER.warning("Structure not found");
             return ResponseEntity.notFound().build();
+        } catch (RuntimeException e) {
+            LOGGER.severe("Error downloading NBT file: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
-
-        InputStreamResource resource = new InputStreamResource(nbtFile.getInputStream());
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .contentLength(nbtFile.getSize())
-                .body(resource);
     }
 }
