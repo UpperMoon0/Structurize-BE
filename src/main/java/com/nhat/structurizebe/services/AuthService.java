@@ -1,5 +1,8 @@
 package com.nhat.structurizebe.services;
 
+import com.nhat.structurizebe.exception.EmailAlreadyExistException;
+import com.nhat.structurizebe.exception.RoleNotFoundException;
+import com.nhat.structurizebe.exception.UsernameAlreadyExistException;
 import com.nhat.structurizebe.models.documents.AccountDocument;
 import com.nhat.structurizebe.models.documents.RoleDocument;
 import com.nhat.structurizebe.repositories.AccountRepository;
@@ -21,15 +24,24 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
-    public void register(String email, String username, String password) {
+    public void register(String email, String username, String password) throws EmailAlreadyExistException, UsernameAlreadyExistException, RoleNotFoundException {
 
         AccountDocument account = new AccountDocument();
         account.setEmail(email);
         account.setUsername(username);
+
+        accountRepository.findByEmail(email).ifPresent(acc -> {
+            throw new EmailAlreadyExistException();
+        });
+
+        accountRepository.findByUsername(username).ifPresent(acc -> {
+            throw new UsernameAlreadyExistException();
+        });
+
         String encodedPassword = passwordEncoder.encode(password);
         account.setPassword(encodedPassword);
 
-        RoleDocument role = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found"));
+        RoleDocument role = roleRepository.findByName("ROLE_USER").orElseThrow(RoleNotFoundException::new);
         account.getRoleIds().add(role.getId());
 
         accountRepository.save(account);
