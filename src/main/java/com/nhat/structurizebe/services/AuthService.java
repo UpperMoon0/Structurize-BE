@@ -1,5 +1,6 @@
 package com.nhat.structurizebe.services;
 
+import com.nhat.structurizebe.exception.AccountNotFoundException;
 import com.nhat.structurizebe.exception.EmailAlreadyExistException;
 import com.nhat.structurizebe.exception.RoleNotFoundException;
 import com.nhat.structurizebe.exception.UsernameAlreadyExistException;
@@ -57,8 +58,8 @@ public class AuthService {
         }
     }
 
-    public AccountDocument getAccountByJwt(String jwt) {
+    public AccountDocument getAccountByJwt(String jwt) throws UsernameNotFoundException {
         String email = jwtService.extractUsername(jwt);
-        return accountRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return accountRepository.findByEmail(email).orElseThrow(AccountNotFoundException::new);
     }
 }

@@ -1,6 +1,8 @@
 package com.nhat.structurizebe.controllers;
 
+import com.nhat.structurizebe.exception.AccountNotFoundException;
 import com.nhat.structurizebe.models.documents.StructureDocument;
+import com.nhat.structurizebe.models.dto.response.StructureListResponse;
 import com.nhat.structurizebe.services.AuthService;
 import com.nhat.structurizebe.services.JwtService;
 import com.nhat.structurizebe.services.StructureService;
@@ -13,11 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/structure")
 @RestController
 public class StructureController {
+
+    private static final Logger LOGGER = Logger.getLogger(StructureController.class.getName());
 
     private final StructureService structureService;
     private final AuthService authService;
@@ -30,6 +35,23 @@ public class StructureController {
     @GetMapping("get-all-structures")
     public ResponseEntity<Iterable<StructureDocument>> getAllStructures() {
         return ResponseEntity.ok(structureService.getAllStructures());
+    }
+
+    @GetMapping("get-structure-list")
+    public ResponseEntity<StructureListResponse> getStructureList(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        try {
+            StructureListResponse response;
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                response = structureService.getStructureList();
+            } else {
+                String token = authorizationHeader.substring(7);
+                response = structureService.getStructureList(token);
+            }
+            return ResponseEntity.ok(response);
+        } catch (AccountNotFoundException e) {
+            LOGGER.severe("Account not found");
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/create-structure-from-nbt")
@@ -45,7 +67,7 @@ public class StructureController {
             structureService.createStructureFromNBTFile(name, description, authorId, file);
             return ResponseEntity.ok("Structure created successfully");
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe("Error creating structure: " + e.getMessage());
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }

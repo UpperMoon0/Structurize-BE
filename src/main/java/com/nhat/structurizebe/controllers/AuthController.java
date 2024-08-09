@@ -18,8 +18,9 @@ import java.util.logging.Logger;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService authService;
     private static final Logger LOGGER = Logger.getLogger(AuthController.class.getName());
+
+    private final AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
@@ -33,7 +34,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Username already exists");
         }
         catch (RoleNotFoundException e) {
-            LOGGER.warning("Role not found");
+            LOGGER.severe("Role not found");
             return ResponseEntity.badRequest().body("Register failed, please try again later");
         }
 
